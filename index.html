@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGIS Interaktif Kalimantan - Pustaka Leaflet</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS 1.9.4 (CDN - Slide 5) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- 1. Header Navbar Mengambang (Floating Glassmorphism Navbar) -->
+    <nav class="navbar-floating">
+        <div class="brand-badge">
+            <i class="fas fa-globe-asia"></i>
+        </div>
+        <div class="brand-text">
+            <h1>WebGIS Interaktif Kalimantan</h1>
+            <p>Batas Administrasi, Jaringan Jalan, Sungai, Toponim & Tutupan Lahan</p>
+        </div>
+        <div class="quick-stats">
+            <span class="stat-chip danger"><i class="fas fa-fire"></i> Siaga I: Kalteng & Kaltim</span>
+            <span class="stat-chip warning"><i class="fas fa-exclamation-triangle"></i> Siaga II: Kalbar & Kalsel</span>
+            <span class="stat-chip info"><i class="fas fa-shield-alt"></i> Waspada: Kaltara</span>
+            <button onclick="resetMapView()" style="background:#1d3557; color:#fff; border:none; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:5px;">
+                <i class="fas fa-home"></i> Home View
+            </button>
+        </div>
+    </nav>
+
+    <!-- 1b. Panel Statistik Geospasial Sisi Kiri (Dashboard Metrics) -->
+    <aside class="stats-sidebar-left" id="statsSidebar">
+        <!-- Header Panel -->
+        <div class="stats-header">
+            <div class="stats-header-info">
+                <div class="stats-icon-badge">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div class="stats-header-text">
+                    <h3>Statistik Spasial</h3>
+                    <p>Kalimantan Monitoring Dashboard</p>
+                </div>
+            </div>
+            <button class="btn-toggle-sidebar" id="btnToggleSidebar" onclick="toggleStatsSidebar()" title="Sembunyikan / Tampilkan Panel">
+                <i class="fas fa-chevron-left" id="toggleSidebarIcon"></i>
+            </button>
+        </div>
+
+        <!-- Body Panel -->
+        <div class="stats-body">
+            <!-- 1. Grid Metrik Utama (KPIs) -->
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="label"><i class="fas fa-map-marked-alt" style="color:#1d3557;"></i> Wilayah</div>
+                    <div class="value">53,45 M</div>
+                    <div class="subtext">Hektar (5 Provinsi)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label"><i class="fas fa-seedling" style="color:#2a9d8f;"></i> Gambut KHG</div>
+                    <div class="value">1,91 M</div>
+                    <div class="subtext">Hektar (6 Kawasan)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label"><i class="fas fa-road" style="color:#d90429;"></i> Jalan Trans</div>
+                    <div class="value">2.568</div>
+                    <div class="subtext">Kilometer (4 Poros)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label"><i class="fas fa-map-pin" style="color:#e63946;"></i> Posko & Kota</div>
+                    <div class="value">11 Titik</div>
+                    <div class="subtext">6 Kota & 5 Posko</div>
+                </div>
+            </div>
+
+            <!-- 2. Status Kerawanan Karhutla per Provinsi -->
+            <div class="stat-section-card">
+                <div class="stat-section-title">
+                    <span><i class="fas fa-shield-alt"></i> Status Mitigasi Karhutla</span>
+                    <span style="font-size:9.5px; color:#64748b; font-weight:normal;">Luas (Ha)</span>
+                </div>
+
+                <!-- Kalteng -->
+                <div class="prov-stat-row">
+                    <div class="prov-stat-info">
+                        <span class="prov-stat-name">
+                            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#E63946;"></span>
+                            Kalimantan Tengah (Siaga I)
+                        </span>
+                        <span class="prov-stat-val">15,35 M Ha</span>
+                    </div>
+                    <div class="prov-progress-bg">
+                        <div class="prov-progress-fill" style="width: 28.7%; background: #E63946;"></div>
+                    </div>
+                </div>
+
+                <!-- Kaltim -->
+                <div class="prov-stat-row">
+                    <div class="prov-stat-info">
+                        <span class="prov-stat-name">
+                            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#E63946;"></span>
+                            Kalimantan Timur (Siaga I)
+                        </span>
+                        <span class="prov-stat-val">12,69 M Ha</span>
+                    </div>
+                    <div class="prov-progress-bg">
+                        <div class="prov-progress-fill" style="width: 23.7%; background: #E63946;"></div>
+                    </div>
+                </div>
+
+                <!-- Kalbar -->
+                <div class="prov-stat-row">
+                    <div class="prov-stat-info">
+                        <span class="prov-stat-name">
+                            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#F4A261;"></span>
+                            Kalimantan Barat (Siaga II)
+                        </span>
+                        <span class="prov-stat-val">14,70 M Ha</span>
+                    </div>
+                    <div class="prov-progress-bg">
+                        <div class="prov-progress-fill" style="width: 27.5%; background: #F4A261;"></div>
+                    </div>
+                </div>
+
+                <!-- Kalsel -->
+                <div class="prov-stat-row">
+                    <div class="prov-stat-info">
+                        <span class="prov-stat-name">
+                            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#F4A261;"></span>
+                            Kalimantan Selatan (Siaga II)
+                        </span>
+                        <span class="prov-stat-val">3,71 M Ha</span>
+                    </div>
+                    <div class="prov-progress-bg">
+                        <div class="prov-progress-fill" style="width: 6.9%; background: #F4A261;"></div>
+                    </div>
+                </div>
+
+                <!-- Kaltara -->
+                <div class="prov-stat-row">
+                    <div class="prov-stat-info">
+                        <span class="prov-stat-name">
+                            <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#E9C46A;"></span>
+                            Kalimantan Utara (Waspada)
+                        </span>
+                        <span class="prov-stat-val">7,01 M Ha</span>
+                    </div>
+                    <div class="prov-progress-bg">
+                        <div class="prov-progress-fill" style="width: 13.1%; background: #E9C46A;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Kawasan Hidrologis Gambut (KHG) Rentan -->
+            <div class="stat-section-card">
+                <div class="stat-section-title">
+                    <span><i class="fas fa-tree" style="color:#2a9d8f;"></i> KHG Restorasi Gambut</span>
+                    <span style="font-size:9.5px; color:#2a9d8f; font-weight:700;">1.907.100 Ha</span>
+                </div>
+                <div style="font-size: 11px; color:#475569; display: flex; flex-direction:column; gap: 5px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:4px 8px; border-radius:6px;">
+                        <span><b>Kahayan - Sebangau</b></span>
+                        <span style="background:#ffe3e3; color:#d90429; padding:2px 6px; border-radius:4px; font-size:9.5px; font-weight:700;">582.400 Ha</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:4px 8px; border-radius:6px;">
+                        <span><b>Kapuas - Barito</b> (Eks-PLG)</span>
+                        <span style="background:#ffe3e3; color:#d90429; padding:2px 6px; border-radius:4px; font-size:9.5px; font-weight:700;">445.200 Ha</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:4px 8px; border-radius:6px;">
+                        <span><b>Sungai Pawan - Tolak</b></span>
+                        <span style="background:#fff3bf; color:#f08c00; padding:2px 6px; border-radius:4px; font-size:9.5px; font-weight:700;">312.000 Ha</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:4px 8px; border-radius:6px;">
+                        <span><b>Danau Panggang</b></span>
+                        <span style="background:#fff3bf; color:#f08c00; padding:2px 6px; border-radius:4px; font-size:9.5px; font-weight:700;">218.000 Ha</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Navigasi Cepat Antar-Wilayah (Quick Zoom) -->
+            <div class="stat-section-card">
+                <div class="stat-section-title">
+                    <span><i class="fas fa-crosshairs"></i> Fokus Wilayah (Zoom)</span>
+                </div>
+                <div class="quick-nav-group">
+                    <button class="nav-chip-btn" onclick="zoomToRegion('kalteng')"><i class="fas fa-search-location"></i> Kalteng</button>
+                    <button class="nav-chip-btn" onclick="zoomToRegion('kaltim')"><i class="fas fa-search-location"></i> Kaltim / IKN</button>
+                    <button class="nav-chip-btn" onclick="zoomToRegion('kalbar')"><i class="fas fa-search-location"></i> Kalbar</button>
+                    <button class="nav-chip-btn" onclick="zoomToRegion('kalsel')"><i class="fas fa-search-location"></i> Kalsel</button>
+                    <button class="nav-chip-btn" onclick="zoomToRegion('kaltara')"><i class="fas fa-search-location"></i> Kaltara</button>
+                    <button class="nav-chip-btn" onclick="zoomToRegion('gambut')"><i class="fas fa-fire"></i> Gambut KHG</button>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 2. Wadah Peta Utama (Slide 4: div id="map") -->
+    <div id="map"></div>
+
+    <!-- 3. Pelacak Koordinat Kursor Mouse (Kiri Bawah) -->
+    <div class="coord-box" id="coord-display">
+        <i class="fas fa-crosshairs"></i> Arahkan kursor ke peta...
+    </div>
+
+    <!-- 4. Panel Legenda Kartografis Peta (Kanan Bawah) -->
+    <div class="legend-panel">
+        <h4>
+            <span><i class="fas fa-layer-group"></i> Legenda Peta</span>
+        </h4>
+
+        <!-- Sesi Administrasi -->
+        <div class="legend-section-title">Batas Administrasi (Status)</div>
+        <div class="legend-item">
+            <div class="color-swatch" style="background: #E63946;"></div>
+            <span>Prioritas Siaga I</span>
+        </div>
+        <div class="legend-item">
+            <div class="color-swatch" style="background: #F4A261;"></div>
+            <span>Siaga II Karhutla</span>
+        </div>
+        <div class="legend-item">
+            <div class="color-swatch" style="background: #E9C46A;"></div>
+            <span>Waspada</span>
+        </div>
+        <div class="legend-item">
+            <div class="color-swatch" style="background: #CED4DA;"></div>
+            <span>Luar Wilayah Kajian</span>
+        </div>
+
+        <!-- Sesi Infrastruktur & Jaringan -->
+        <div class="legend-section-title">Jaringan & Tata Ruang</div>
+        <div class="legend-item">
+            <div class="line-swatch" style="background: #D90429;"></div>
+            <span>Jalan Trans-Kalimantan</span>
+        </div>
+        <div class="legend-item">
+            <div class="line-swatch" style="background: #0077B6;"></div>
+            <span>Jaringan Sungai Utama</span>
+        </div>
+        <div class="legend-item">
+            <div class="color-swatch" style="background: #2A9D8F;"></div>
+            <span>Tutupan Lahan (Gambut/KHG)</span>
+        </div>
+
+        <!-- Sesi Toponim -->
+        <div class="legend-section-title">Toponim & Titik Pantau</div>
+        <div class="legend-item">
+            <div class="point-swatch" style="background: #1D3557; border: 2px solid #fff;"></div>
+            <span>Ibu Kota & Kota Otonom</span>
+        </div>
+        <div class="legend-item">
+            <div class="point-swatch" style="background: #E63946; border: 2px solid #fff;"></div>
+            <span>Posko Pantau Karhutla</span>
+        </div>
+    </div>
+
+    <!-- 5. Leaflet JS 1.9.4 (CDN - Slide 5) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- 6. Data Bundles (Mendukung file:// & offline) -->
+    <script src="data/administrasi.js"></script>
+    <script src="data/jalan.js"></script>
+    <script src="data/sungai.js"></script>
+    <script src="data/tutupan_lahan.js"></script>
+    <script src="data/toponim.js"></script>
+
+    <!-- 7. Custom Scripts (Slide 18: File Terpisah & Terorganisir) -->
+    <script src="js/layers.js"></script>
+    <script src="js/map.js"></script>
+
+</body>
+</html>
