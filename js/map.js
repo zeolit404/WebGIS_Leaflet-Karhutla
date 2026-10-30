@@ -73,9 +73,10 @@ var overlayMaps = {
 };
 
 // 5. Menambahkan Kendali Lapisan Peta (L.control.layers - Slide 13)
+// Menggunakan collapsed: true agar rapi dan tidak menumpuk dengan Legenda Peta
 var layerControl = L.control.layers(baseMaps, overlayMaps, {
     position: 'topright',
-    collapsed: false
+    collapsed: true
 }).addTo(map);
 
 // 6. Penataan Urutan Lapisan (Z-Index - Slide 16)
@@ -117,6 +118,20 @@ function toggleStatsSidebar() {
         icon.className = 'fas fa-chart-pie';
     } else {
         icon.className = 'fas fa-chevron-left';
+    }
+}
+
+// 9b. Fungsi Toggle / Minimalkan Panel Legenda Peta (Kanan Bawah)
+function toggleLegend() {
+    var legend = document.getElementById('legendPanel');
+    var icon = document.getElementById('toggleLegendIcon');
+    if (!legend) return;
+
+    legend.classList.toggle('collapsed');
+    if (legend.classList.contains('collapsed')) {
+        icon.className = 'fas fa-chevron-up';
+    } else {
+        icon.className = 'fas fa-chevron-down';
     }
 }
 

@@ -215,65 +215,70 @@
     </div>
 
     <!-- 4. Panel Legenda Kartografis Peta (Kanan Bawah) -->
-    <div class="legend-panel">
+    <div class="legend-panel" id="legendPanel">
         <h4>
             <span><i class="fas fa-layer-group"></i> Legenda Peta</span>
+            <button onclick="toggleLegend()" class="btn-toggle-legend" title="Sembunyikan / Buka Legenda">
+                <i class="fas fa-chevron-down" id="toggleLegendIcon"></i>
+            </button>
         </h4>
 
-        <!-- Sesi Administrasi -->
-        <div class="legend-section-title">Batas Administrasi (Status)</div>
-        <div class="legend-item">
-            <div class="color-swatch" style="background: #E63946;"></div>
-            <span>Prioritas Siaga I</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-swatch" style="background: #F4A261;"></div>
-            <span>Siaga II Karhutla</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-swatch" style="background: #E9C46A;"></div>
-            <span>Waspada</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-swatch" style="background: #CED4DA;"></div>
-            <span>Luar Wilayah Kajian</span>
-        </div>
+        <div class="legend-content" id="legendContent">
+            <!-- Sesi Administrasi -->
+            <div class="legend-section-title">Batas Administrasi (Status)</div>
+            <div class="legend-item">
+                <div class="color-swatch" style="background: #E63946;"></div>
+                <span>Prioritas Siaga I</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-swatch" style="background: #F4A261;"></div>
+                <span>Siaga II Karhutla</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-swatch" style="background: #E9C46A;"></div>
+                <span>Waspada</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-swatch" style="background: #CED4DA;"></div>
+                <span>Luar Wilayah Kajian</span>
+            </div>
 
-        <!-- Sesi Infrastruktur & Jaringan -->
-        <div class="legend-section-title">Jaringan & Tata Ruang</div>
-        <div class="legend-item">
-            <div class="line-swatch" style="background: #D90429;"></div>
-            <span>Jalan Trans-Kalimantan</span>
-        </div>
-        <div class="legend-item">
-            <div class="line-swatch" style="background: #0077B6;"></div>
-            <span>Jaringan Sungai Utama</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-swatch" style="background: #2A9D8F;"></div>
-            <span>Tutupan Lahan (Gambut/KHG)</span>
-        </div>
+            <!-- Sesi Infrastruktur & Jaringan -->
+            <div class="legend-section-title">Jaringan & Tata Ruang</div>
+            <div class="legend-item">
+                <div class="line-swatch" style="background: #D90429;"></div>
+                <span>Jalan Trans-Kalimantan</span>
+            </div>
+            <div class="legend-item">
+                <div class="line-swatch" style="background: #0077B6;"></div>
+                <span>Jaringan Sungai Utama</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-swatch" style="background: #2A9D8F;"></div>
+                <span>Tutupan Lahan (Gambut/KHG)</span>
+            </div>
 
-        <!-- Sesi Toponim -->
-        <div class="legend-section-title">Toponim & Titik Pantau</div>
-        <div class="legend-item">
-            <div class="point-swatch" style="background: #1D3557; border: 2px solid #fff;"></div>
-            <span>Ibu Kota & Kota Otonom</span>
-        </div>
-        <div class="legend-item">
-            <div class="point-swatch" style="background: #E63946; border: 2px solid #fff;"></div>
-            <span>Posko Pantau Karhutla</span>
-        </div>
+            <!-- Sesi Toponim -->
+            <div class="legend-section-title">Toponim & Titik Pantau</div>
+            <div class="legend-item">
+                <div class="point-swatch" style="background: #1D3557; border: 2px solid #fff;"></div>
+                <span>Ibu Kota & Kota Otonom</span>
+            </div>
+            <div class="legend-item">
+                <div class="point-swatch" style="background: #E63946; border: 2px solid #fff;"></div>
+                <span>Posko Pantau Karhutla</span>
+            </div>
 
-        <!-- Sesi Parameter Cuaca & Angin -->
-        <div class="legend-section-title">Meteorologi & Angin</div>
-        <div class="legend-item">
-            <div class="point-swatch" style="background: #0D9488; border: 2px solid #fff;"></div>
-            <span>Vektor Arah & Kecepatan Angin</span>
-        </div>
-        <div class="legend-item">
-            <div class="color-swatch" style="background: #0284C7; opacity: 0.75;"></div>
-            <span>Radar Cuaca (RainViewer)</span>
+            <!-- Sesi Parameter Cuaca & Angin -->
+            <div class="legend-section-title">Meteorologi & Angin</div>
+            <div class="legend-item">
+                <div class="point-swatch" style="background: #0D9488; border: 2px solid #fff;"></div>
+                <span>Vektor Arah & Kecepatan Angin</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-swatch" style="background: #0284C7; opacity: 0.75;"></div>
+                <span>Radar Cuaca (RainViewer)</span>
+            </div>
         </div>
     </div>
 
